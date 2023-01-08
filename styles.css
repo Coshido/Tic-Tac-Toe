@@ -29,4 +29,10 @@ main {
   display: grid;
   background-color: var(--grey);
   grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  border: 1px solid black;
+}
+.square {
+  width: 80px;
+  height: 80px;
+  border: 1px solid black;
 }
