@@ -1,7 +1,9 @@
-const Player = (name) => {
+const Player = (name, symbol) => {
   const playerName = name;
+  const playerSymbol = symbol;
   const playerClick = (num) => {
-    let asd = console.log("player click", playerName, num);
+    Gameboard.gameboard[num] = playerSymbol;
+    let asd = console.log("player click", playerName, playerSymbol, num);
   };
   return { playerClick };
 };
@@ -25,8 +27,8 @@ const Gameboard = (() => {
 })();
 
 const GameController = (() => {
-  const player1 = Player("player1");
-  const player2 = Player("player2");
+  const player1 = Player("player1", "x");
+  const player2 = Player("player2", "o");
   const activePlayer = player1;
   Gameboard.render(activePlayer);
   return { player1, player2, activePlayer };
