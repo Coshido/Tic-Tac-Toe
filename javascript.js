@@ -1,6 +1,7 @@
-const Player = () => {
+const Player = (name) => {
+  const playerName = name;
   const playerClick = (num) => {
-    let asd = console.log("player click", Gameboard.player, num);
+    let asd = console.log("player click", playerName, num);
   };
   return { playerClick };
 };
@@ -8,8 +9,8 @@ const Player = () => {
 const Gameboard = (() => {
   const gameboard = ["", "", "", "", "", "", "", "", ""];
   const displayDiv = document.querySelector(".gameboard");
-  const player = Player();
-  const render = () => {
+  //const player = GameController.activePlayer;
+  const render = (player) => {
     displayDiv.innerHTML = "";
     for (let i = 0; i < gameboard.length; i++) {
       let div = document.createElement("div");
@@ -20,12 +21,13 @@ const Gameboard = (() => {
       displayDiv.appendChild(div);
     }
   };
-  return { gameboard, render, player };
+  return { gameboard, render };
 })();
 
 const GameController = (() => {
-  const player1 = Player();
-  const player2 = Player();
-  Gameboard.render();
-  return { player1, player2 };
+  const player1 = Player("player1");
+  const player2 = Player("player2");
+  const activePlayer = player1;
+  Gameboard.render(activePlayer);
+  return { player1, player2, activePlayer };
 })();
