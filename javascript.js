@@ -1,17 +1,24 @@
 const Player = (name, symbol) => {
   const playerName = name;
   const playerSymbol = symbol;
+  let winner = "";
   const playerClick = (num) => {
     if (Gameboard.gameboard[num].length == 0) {
       Gameboard.gameboard[num] = playerSymbol;
     } else {
       return;
     }
+    Gameboard.displayPlayer(playerName);
     GameController.winCheck(Gameboard.gameboard);
-    GameController.switchPlayer();
+    if (winner == "") {
+      GameController.switchPlayer();
+    }
   };
   const playerWin = () => {
     console.log(`Congratulation ${playerName}, you won!`);
+    Gameboard.displayWinner(playerName);
+    Gameboard.removeListener();
+    winner = playerName;
   };
   return { playerClick, playerName, playerWin };
 };
@@ -19,6 +26,7 @@ const Player = (name, symbol) => {
 const Gameboard = (() => {
   const gameboard = ["", "", "", "", "", "", "", "", ""];
   const displayDiv = document.querySelector(".gameboard");
+  const gameSettings = document.querySelector(".game-settings");
   const render = (player) => {
     displayDiv.innerHTML = "";
     for (let i = 0; i < gameboard.length; i++) {
@@ -26,7 +34,8 @@ const Gameboard = (() => {
       div.classList.add("square");
       div.setAttribute("number", i);
       div.innerHTML = gameboard[i];
-      div.addEventListener("click", player.playerClick.bind(this, i));
+      const bind = player.playerClick.bind(this, i);
+      div.addEventListener("click", bind);
       displayDiv.appendChild(div);
     }
   };
@@ -35,14 +44,40 @@ const Gameboard = (() => {
       gameboard[i] = "";
     }
     GameController.setActivePlayer1();
+    displayPlayer(GameController.activePlayer.playerName);
     render(GameController.activePlayer);
   };
-  return { gameboard, render, reset };
+  const displayDraw = () => {
+    gameSettings.innerHTML = `It's a draw!`;
+  };
+  const displayPlayer = (player) => {
+    gameSettings.innerHTML = `${player}'s turn`;
+  };
+  const displayWinner = (player) => {
+    console.log("lelele");
+    gameSettings.innerHTML = `Congratulation ${player}, you won!`;
+  };
+  const removeListener = () => {
+    GameController.switchPlayer();
+    let elements = document.querySelectorAll(".square");
+    for (let i = 0; i < elements.length; i++) {
+      elements[i].replaceWith(elements[i].cloneNode(true));
+    }
+  };
+  return {
+    gameboard,
+    render,
+    reset,
+    displayDraw,
+    displayPlayer,
+    displayWinner,
+    removeListener,
+  };
 })();
 
 const GameController = (() => {
-  const player1 = Player("player1", "X");
-  const player2 = Player("player2", "O");
+  const player1 = Player("Player 1", "X");
+  const player2 = Player("Player 2", "O");
   let activePlayer = player1;
   const switchPlayer = () => {
     console.log("switch", activePlayer);
@@ -84,6 +119,7 @@ const GameController = (() => {
         }
       } else if (!gameboard.includes("")) {
         console.log("it is a draw");
+        Gameboard.displayDraw();
       }
     }
   };
@@ -93,6 +129,7 @@ const GameController = (() => {
   };
 
   Gameboard.render(activePlayer);
+  Gameboard.displayPlayer(activePlayer.playerName);
   return {
     activePlayer,
     switchPlayer,
