@@ -28,7 +28,12 @@ const Gameboard = (() => {
     }
   };
   const reset = () => {
-    GameController.newGame();
+    for (let i = 0; i < gameboard.length; i++) {
+      gameboard[i] = "";
+    }
+    GameController.activePlayer = 1;
+    render(GameController.player1);
+    //GameController.newGame();
   };
   return { gameboard, render, reset };
 })();
@@ -38,13 +43,13 @@ const GameController = (() => {
   const player2 = Player("player2", "O");
   let activePlayer = 1;
   const switchPlayer = () => {
-    console.log("switch");
+    console.log("switch", activePlayer);
     if (activePlayer == 0) {
-      Gameboard.render(player1);
       activePlayer = 1;
+      Gameboard.render(player1);
     } else {
-      Gameboard.render(player2);
       activePlayer = 0;
+      Gameboard.render(player2);
     }
   };
 
@@ -79,14 +84,7 @@ const GameController = (() => {
       }
     }
   };
-
-  const newGame = () => {
-    for (let i = 0; i < Gameboard.gameboard.length; i++) {
-      Gameboard.gameboard[i] = "";
-    }
-    activePlayer = 1;
-    Gameboard.render(player1);
-  };
   Gameboard.render(player1);
-  return { activePlayer, switchPlayer, player1, player2, winCheck, newGame };
+  //Gameboard.reset();
+  return { activePlayer, switchPlayer, player1, player2, winCheck };
 })();
