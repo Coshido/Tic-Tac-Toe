@@ -6,7 +6,10 @@ const Player = (name, symbol) => {
     GameController.switchPlayer();
     let asd = console.log("player click", playerName, playerSymbol, num);
   };
-  return { playerClick, playerName };
+  const playerWin = () => {
+    console.log(`Congratulation ${playerName}, you won!`);
+  };
+  return { playerClick, playerName, playerWin };
 };
 
 const Gameboard = (() => {
@@ -27,8 +30,8 @@ const Gameboard = (() => {
 })();
 
 const GameController = (() => {
-  const player1 = Player("player1", "x");
-  const player2 = Player("player2", "o");
+  const player1 = Player("player1", "X");
+  const player2 = Player("player2", "O");
   let activePlayer = 1;
   const switchPlayer = () => {
     console.log("switch");
@@ -40,6 +43,39 @@ const GameController = (() => {
       activePlayer = 0;
     }
   };
+
+  const winCheck = (gameboard) => {
+    const winCondition = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+    console.log("checking", gameboard[winCondition[0][1]]);
+    for (let i = 0; i < winCondition.length; i++) {
+      let a = winCondition[i][0];
+      let b = winCondition[i][1];
+      let c = winCondition[i][2];
+
+      if (
+        gameboard[a] === gameboard[b] &&
+        gameboard[a] === gameboard[c] &&
+        gameboard[a].length + gameboard[b].length + gameboard[c].length >= 3
+      ) {
+        console.log("yeah boi");
+        if (activePlayer == 0) {
+          player1.playerWin();
+        } else {
+          player2.playerWin();
+        }
+      }
+    }
+  };
+
   Gameboard.render(player1);
-  return { activePlayer, switchPlayer, player1, player2 };
+  return { activePlayer, switchPlayer, player1, player2, winCheck };
 })();
