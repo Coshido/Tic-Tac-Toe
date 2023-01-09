@@ -5,7 +5,6 @@ const Player = (name, symbol) => {
     Gameboard.gameboard[num] = playerSymbol;
     GameController.switchPlayer();
     GameController.winCheck(Gameboard.gameboard);
-    let asd = console.log("player click", playerName, playerSymbol, num);
   };
   const playerWin = () => {
     console.log(`Congratulation ${playerName}, you won!`);
@@ -31,9 +30,8 @@ const Gameboard = (() => {
     for (let i = 0; i < gameboard.length; i++) {
       gameboard[i] = "";
     }
-    GameController.activePlayer = 1;
-    render(GameController.player1);
-    //GameController.newGame();
+    GameController.setActivePlayer1();
+    render(GameController.activePlayer);
   };
   return { gameboard, render, reset };
 })();
@@ -41,16 +39,15 @@ const Gameboard = (() => {
 const GameController = (() => {
   const player1 = Player("player1", "X");
   const player2 = Player("player2", "O");
-  let activePlayer = 1;
+  let activePlayer = player1;
   const switchPlayer = () => {
     console.log("switch", activePlayer);
-    if (activePlayer == 0) {
-      activePlayer = 1;
-      Gameboard.render(player1);
+    if (activePlayer == player1) {
+      activePlayer = player2;
     } else {
-      activePlayer = 0;
-      Gameboard.render(player2);
+      activePlayer = player1;
     }
+    Gameboard.render(activePlayer);
   };
 
   const winCheck = (gameboard) => {
@@ -76,7 +73,7 @@ const GameController = (() => {
         gameboard[a].length + gameboard[b].length + gameboard[c].length >= 3
       ) {
         console.log("yeah boi");
-        if (activePlayer == 0) {
+        if (activePlayer == player1) {
           player1.playerWin();
         } else {
           player2.playerWin();
@@ -84,7 +81,18 @@ const GameController = (() => {
       }
     }
   };
-  Gameboard.render(player1);
-  //Gameboard.reset();
-  return { activePlayer, switchPlayer, player1, player2, winCheck };
+
+  const setActivePlayer1 = () => {
+    activePlayer = player1;
+  };
+
+  Gameboard.render(activePlayer);
+  return {
+    activePlayer,
+    switchPlayer,
+    player1,
+    player2,
+    winCheck,
+    setActivePlayer1,
+  };
 })();
