@@ -4,6 +4,7 @@ const Player = (name, symbol) => {
   const playerClick = (num) => {
     Gameboard.gameboard[num] = playerSymbol;
     GameController.switchPlayer();
+    GameController.winCheck(Gameboard.gameboard);
     let asd = console.log("player click", playerName, playerSymbol, num);
   };
   const playerWin = () => {
@@ -55,7 +56,7 @@ const GameController = (() => {
       [0, 4, 8],
       [2, 4, 6],
     ];
-    console.log("checking", gameboard[winCondition[0][1]]);
+    //console.log("checking", gameboard[winCondition[0][1]]);
     for (let i = 0; i < winCondition.length; i++) {
       let a = winCondition[i][0];
       let b = winCondition[i][1];
