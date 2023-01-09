@@ -27,7 +27,10 @@ const Gameboard = (() => {
       displayDiv.appendChild(div);
     }
   };
-  return { gameboard, render };
+  const reset = () => {
+    GameController.newGame();
+  };
+  return { gameboard, render, reset };
 })();
 
 const GameController = (() => {
@@ -77,6 +80,13 @@ const GameController = (() => {
     }
   };
 
+  const newGame = () => {
+    for (let i = 0; i < Gameboard.gameboard.length; i++) {
+      Gameboard.gameboard[i] = "";
+    }
+    activePlayer = 1;
+    Gameboard.render(player1);
+  };
   Gameboard.render(player1);
-  return { activePlayer, switchPlayer, player1, player2, winCheck };
+  return { activePlayer, switchPlayer, player1, player2, winCheck, newGame };
 })();
