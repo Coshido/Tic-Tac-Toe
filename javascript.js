@@ -2,9 +2,13 @@ const Player = (name, symbol) => {
   const playerName = name;
   const playerSymbol = symbol;
   const playerClick = (num) => {
-    Gameboard.gameboard[num] = playerSymbol;
-    GameController.switchPlayer();
+    if (Gameboard.gameboard[num].length == 0) {
+      Gameboard.gameboard[num] = playerSymbol;
+    } else {
+      return;
+    }
     GameController.winCheck(Gameboard.gameboard);
+    GameController.switchPlayer();
   };
   const playerWin = () => {
     console.log(`Congratulation ${playerName}, you won!`);
@@ -78,6 +82,8 @@ const GameController = (() => {
         } else {
           player2.playerWin();
         }
+      } else if (!gameboard.includes("")) {
+        console.log("it is a draw");
       }
     }
   };
