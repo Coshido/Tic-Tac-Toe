@@ -12,6 +12,8 @@ const Player = (name, symbol) => {
     GameController.winCheck(Gameboard.gameboard);
     if (winner == "") {
       GameController.switchPlayer();
+    } else {
+      winner = "";
     }
   };
   const playerWin = () => {
@@ -20,7 +22,10 @@ const Player = (name, symbol) => {
     Gameboard.removeListener();
     winner = playerName;
   };
-  return { playerClick, playerName, playerWin };
+  const resetWinner = () => {
+    winner = "";
+  };
+  return { playerClick, playerName, playerWin, resetWinner };
 };
 
 const Gameboard = (() => {
